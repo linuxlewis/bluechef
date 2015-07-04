@@ -1,0 +1,21 @@
+db:
+  image: postgres
+  ports:
+    - "5430:5432"
+
+redis:
+  image: redis
+
+app:
+  build: .
+  command: python3 manage.py runserver 0.0.0.0:1337
+  links:
+    - db
+    - redis
+  environment:
+    - DATABASE_URL=postgres://postgres@db:5432/postgres
+  ports:
+    - "1337:1337"
+  volumes:
+    - ".:/code"
+
